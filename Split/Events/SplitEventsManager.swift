@@ -58,21 +58,21 @@ class DefaultSplitEventsManager: SplitEventsManager {
     }
 
     func register(event: SplitEvent, task: SplitEventTask) {
-//        let queue = DispatchQueue(label: "io.Split.Register.SplitEventTask")
-//        queue.sync {
-//
-//            // If event is already triggered, execute the task
-//            if self.executionTimes[event.toString()] != nil && self.executionTimes[event.toString()] == 0 {
-//                executeTask(event: event, task: task)
-//                return
-//            }
-//
-//            if self.suscriptions[event] != nil {
-//                self.suscriptions[event]?.append(task)
-//            } else {
-//                self.suscriptions[event] = [task]
-//            }
-//        }
+        let queue = DispatchQueue(label: "io.Split.Register.SplitEventTask")
+        queue.sync {
+
+            // If event is already triggered, execute the task
+            if self.executionTimes[event.toString()] != nil && self.executionTimes[event.toString()] == 0 {
+                executeTask(event: event, task: task)
+                return
+            }
+
+            if self.suscriptions[event] != nil {
+                self.suscriptions[event]?.append(task)
+            } else {
+                self.suscriptions[event] = [task]
+            }
+        }
     }
 
     func start() {
