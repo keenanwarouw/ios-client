@@ -71,10 +71,10 @@ extension DefaultImpressionsManager {
 extension DefaultImpressionsManager {
 
     private func appendHit() {
-        if currentImpressionsHit.count == 0 { return }
-        let newHit = ImpressionsHit(identifier: UUID().uuidString, impressions: currentImpressionsTests())
-        impressionsHits.setValue(newHit, forKey: newHit.identifier)
-        currentImpressionsHit.removeAll()
+//        if currentImpressionsHit.count == 0 { return }
+//        let newHit = ImpressionsHit(identifier: UUID().uuidString, impressions: currentImpressionsTests())
+//        impressionsHits.setValue(newHit, forKey: newHit.identifier)
+//        currentImpressionsHit.removeAll()
     }
 
     private func createPollingManager(dispatchGroup: DispatchGroup?) {
