@@ -20,6 +20,7 @@ class DefaultSplitEventsManager: SplitEventsManager {
     private let queue: SynchronizedArrayQueue<SplitInternalEvent>
     private var queueReadingTimer: DispatchSourceTimer?
     private let queueReadingRefreshTime: Int
+	private let recurMutex: NSRecursiveLock = NSRecursiveLock()
 
     private var eventMySegmentsAreReady: Bool
     private var eventSplitsAreReady: Bool
@@ -67,11 +68,13 @@ class DefaultSplitEventsManager: SplitEventsManager {
                 return
             }
 
+			self.recurMutex.lock()
             if self.suscriptions[event] != nil {
                 self.suscriptions[event]?.append(task)
             } else {
                 self.suscriptions[event] = [task]
             }
+			self.recurMutex.unlock()
         }
     }
 
@@ -160,11 +163,13 @@ class DefaultSplitEventsManager: SplitEventsManager {
             self.executionTimes[event.toString()]! = self.executionTimes[event.toString()]! - 1
         } //If executionTimes is lower than zero, execute it without limitation
 
+		recurMutex.lock()
         if self.suscriptions[event] != nil {
             for task in self.suscriptions[event]! {
                 executeTask(event: event, task: task)
             }
         }
+		recurMutex.unlock()
     }
 
     private func executeTask(event: SplitEvent, task: SplitEventTask) {
